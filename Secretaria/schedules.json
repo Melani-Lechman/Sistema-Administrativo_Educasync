@@ -1,0 +1,129 @@
+{
+  "1": {
+    "name": "Primer Año",
+    "divisions": {
+      "A": {
+        "manana": [
+          {
+            "hora": "07:45 - 08:25",
+            "dia": "LUNES",
+            "materia": "Lengua",
+            "profesor": "Mariana Lorenza",
+            "aula": "6"
+          }
+        ],
+        "tarde": []
+      },
+      "B": {
+        "manana": [],
+        "tarde": [
+          {
+            "hora": "13:30 - 14:10",
+            "dia": "LUNES",
+            "materia": "Matemática",
+            "profesor": "Laura",
+            "aula": "6"
+          }
+        ]
+      },
+      "C": {
+        "manana": [
+          {
+            "hora": "07:45 - 08:25",
+            "dia": "LUNES",
+            "materia": "lengua",
+            "profesor": "Mariana",
+            "aula": "5"
+          }
+        ],
+        "tarde": []
+      }
+    }
+  },
+  "2": {
+    "name": "Segundo Año",
+    "divisions": {
+      "A": {
+        "manana": [],
+        "tarde": []
+      },
+      "B": {
+        "manana": [
+          {
+            "hora": "07:45 - 08:25",
+            "dia": "LUNES",
+            "materia": "Matemática",
+            "profesor": "Marco",
+            "aula": "6"
+          }
+        ],
+        "tarde": []
+      },
+      "C": {
+        "manana": [],
+        "tarde": []
+      }
+    }
+  },
+  "3": {
+    "name": "Tercer Año",
+    "divisions": {
+      "A-TIPP": {
+        "manana": [],
+        "tarde": []
+      },
+      "B-MMO": {
+        "manana": [],
+        "tarde": []
+      }
+    }
+  },
+  "4": {
+    "name": "Cuarto Año",
+    "divisions": {
+      "A-TIPP": {
+        "manana": [],
+        "tarde": []
+      },
+      "B-MMO": {
+        "manana": [],
+        "tarde": []
+      }
+    }
+  },
+  "5": {
+    "name": "Quinto Año",
+    "divisions": {
+      "A-TIPP": {
+        "manana": [],
+        "tarde": []
+      },
+      "B-MMO": {
+        "manana": [],
+        "tarde": []
+      }
+    }
+  },
+  "6": {
+    "name": "Sexto Año",
+    "divisions": {
+      "A-TIPP": {
+        "manana": [],
+        "tarde": []
+      },
+      "B-MMO": {
+        "manana": [],
+        "tarde": []
+      }
+    }
+  },
+  "timeSlots": {
+    "manana": [
+      "07:45 - 08:25",
+      "10:00 - 13:00"
+    ],
+    "tarde": [
+      "13:30 - 14:10"
+    ]
+  }
+}

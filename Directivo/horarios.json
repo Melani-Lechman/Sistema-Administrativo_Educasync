@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "yearName": "Primer Año",
+    "divisions": [
+      {
+        "id": "A",
+        "name": "División A",
+        "schedule": {
+          "08:00-09:00": ["Matemática (Aula 101)", "Física (Lab 1)", "Historia (Aula 102)", "Geografía (Aula 102)", "Lengua (Aula 101)"],
+          "09:00-10:00": ["Matemática (Aula 101)", "Física (Lab 1)", "Historia (Aula 102)", "Geografía (Aula 102)", "Lengua (Aula 101)"],
+          "10:00-11:00": ["Ed. Física (Patio)", "Química (Lab 2)", "", "Arte (Aula 301)", ""],
+          "11:00-12:00": ["Ed. Física (Patio)", "Química (Lab 2)", "", "Arte (Aula 301)", ""]
+        }
+      },
+      {
+        "id": "B",
+        "name": "División B",
+        "schedule": {
+          "08:00-09:00": ["", "Lengua (Aula 103)", "Matemática (Aula 104)", "", ""],
+          "09:00-10:00": ["", "Lengua (Aula 103)", "Matemática (Aula 104)", "", ""],
+          "10:00-11:00": ["Historia (Aula 104)", "", "", "Física (Lab 1)", ""],
+          "11:00-12:00": ["Historia (Aula 104)", "", "", "Física (Lab 1)", ""]
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "yearName": "Segundo Año",
+    "divisions": [
+       {
+        "id": "A",
+        "name": "División A",
+        "schedule": {}
+      }
+    ]
+  },
+  { "id": 3, "yearName": "Tercer Año", "divisions": [] },
+  { "id": 4, "yearName": "Cuarto Año", "divisions": [] },
+  { "id": 5, "yearName": "Quinto Año", "divisions": [] },
+  { "id": 6, "yearName": "Sexto Año", "divisions": [] }
+]

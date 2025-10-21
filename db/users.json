@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1750797283158,
+    "email": "sistema.educasync@gmail.com",
+    "nombre": "secretaria",
+    "contrasena": "1234"
+  },
+  {
+    "id": 1750797231517,
+    "email": "director@educasync.com",
+    "nombre": "directivo",
+    "contrasena": "1234"
+  },
+  {
+    "id": 1750797231518,
+    "email": "director1@educasync.com",
+    "nombre": "directivo1",
+    "contrasena": "1234"
+  },
+  {
+    "id": 1750797231597,
+    "email": "mlechmanalumno@itec-elmolino.edu.ar",
+    "nombre": "meli",
+    "contrasena": "1234"
+  }
+ 
+]

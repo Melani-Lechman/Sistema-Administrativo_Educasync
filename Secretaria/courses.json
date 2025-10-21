@@ -1,0 +1,82 @@
+[
+  {
+    "id": "c1",
+    "year": "1°",
+    "modality": "Inicial",
+    "students": 50,
+    "text": "1°",
+    "color": "#CCD1D1"
+  },
+  {
+    "id": "c2",
+    "year": "2°",
+    "modality": "Inicial",
+    "students": 42,
+    "text": "2°",
+    "color": "#99A3A4"
+  },
+  {
+    "id": "c3",
+    "year": "3°",
+    "modality": "TIPP",
+    "students": 30,
+    "text": "3°",
+    "color": "#85C1E9"
+  },
+  {
+    "id": "c4",
+    "year": "3°",
+    "modality": "MMO",
+    "students": 28,
+    "text": "3°",
+    "color": "#E59866"
+  },
+  {
+    "id": "c5",
+    "year": "4°",
+    "modality": "TIPP",
+    "students": 31,
+    "text": "4°",
+    "color": "#3498DB"
+  },
+  {
+    "id": "c6",
+    "year": "4°",
+    "modality": "MMO",
+    "students": 29,
+    "text": "4°",
+    "color": "#E67E22"
+  },
+  {
+    "id": "c7",
+    "year": "5°",
+    "modality": "TIPP",
+    "students": 28,
+    "text": "5°",
+    "color": "#2874A6"
+  },
+  {
+    "id": "c8",
+    "year": "5°",
+    "modality": "MMO",
+    "students": 27,
+    "text": "5°",
+    "color": "#ad6b31"
+  },
+  {
+    "id": "c9",
+    "year": "6°",
+    "modality": "TIPP",
+    "students": 25,
+    "text": "6°",
+    "color": "#204a64"
+  },
+  {
+    "id": "c10",
+    "year": "6°",
+    "modality": "MMO",
+    "students": 26,
+    "text": "6°",
+    "color": "#784212"
+  }
+]

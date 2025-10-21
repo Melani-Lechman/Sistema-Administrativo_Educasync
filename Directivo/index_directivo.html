@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self'; 
+        script-src 'self'; 
+        style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; 
+        font-src 'self' https://cdnjs.cloudflare.com;
+    ">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EducaSync - Panel del Directivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link rel="stylesheet" href="style_directivo.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Barra Lateral de Navegación -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <h1 class="logo-text">EducaSync</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-link active" data-view="inicio">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </a>
+                <a href="#" class="nav-link" data-view="eventos">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Eventos</span>
+                </a>
+                <a href="#" class="nav-link" data-view="calendario">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Calendario</span>
+                </a>
+                <a href="#" class="nav-link" data-view="cursos">
+                    <i class="fas fa-book"></i>
+                    <span>Cursos</span>
+                </a>
+                <a href="#" class="nav-link" data-view="info-curso">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Info por Curso</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn" class="nav-link logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <header class="main-header">
+                <h2 id="view-title">Panel de Inicio</h2>
+                <button id="config-schedules-btn" class="btn hidden">Configurar Horarios</button>
+            </header>
+            <div class="content-area" id="content-area">
+                <!-- El contenido se cargará aquí -->
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL PARA EVENTOS -->
+    <div id="event-modal" class="modal-overlay hidden">
+      <div class="modal-content small">
+        <button class="close-btn">&times;</button>
+        <h2 id="event-modal-title"></h2>
+        <form id="event-form">
+            <input type="hidden" id="event-id-input">
+            <div class="form-group"><label for="event-title">Nombre del Evento</label><input type="text" id="event-title" required></div>
+            <div class="form-group"><label for="event-date">Fecha (dd/mm/aaaa)</label><input type="text" id="event-date" required></div>
+            <div class="form-group"><label for="event-time">Hora (HH:MM)</label><input type="text" id="event-time" required></div>
+            <div class="form-group"><label for="event-location">Lugar</label><input type="text" id="event-location" required></div>
+            <div class="modal-actions"><button type="submit" class="btn success">Guardar</button></div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- MODAL PARA CURSOS -->
+    <div id="course-modal" class="modal-overlay hidden">
+      <div class="modal-content small">
+        <button class="close-btn">&times;</button>
+        <h2>Editar Curso</h2>
+        <form id="course-form">
+            <input type="hidden" id="course-id-input">
+            <div class="form-group"><label for="course-text">Número del Botón</label><input type="text" id="course-text" required></div>
+            <div class="form-group"><label for="course-modality">Modalidad</label><input type="text" id="course-modality" required></div>
+            <div class="form-group"><label for="course-color">Color (Hex)</label><input type="text" id="course-color" required></div>
+            <div class="form-group"><label for="course-students">Cantidad de Alumnos</label><input type="number" id="course-students" required></div>
+            <div class="modal-actions"><button type="submit" class="btn success">Guardar</button></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODALES DEL GESTOR DE HORARIOS -->
+    <div id="schedule-modal" class="modal-overlay hidden">
+      <div class="modal-content large">
+        <button class="close-btn">&times;</button>
+        <h2 id="schedule-title"></h2>
+        <div id="schedule-tabs" class="tabs-container"></div>
+        <div class="table-wrapper"><table id="schedule-table"><thead></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+    <!-- MODALES PARA GESTIÓN DE CURSOS Y HORARIOS -->
+    <div id="sections-modal" class="modal-overlay hidden">
+      <div class="modal-content small">
+        <button class="close-btn">&times;</button>
+        <h2 id="sections-title"></h2>
+        <div id="sections-list"></div>
+        <div class="add-section-form">
+          <input type="text" id="new-section-name" placeholder="Ej: D-TIPP">
+          <button id="add-section-btn" class="btn success">Agregar Sección</button>
+        </div>
+      </div>
+    </div>
+    <!--Planilla-->
+    <div id="slot-editor-modal" class="modal-overlay hidden">
+      <div class="modal-content small">
+        <button class="close-btn">&times;</button>
+        <h2 id="slot-editor-title">Editar Bloque</h2>
+        <div class="form-group"><label for="slot-materia">Materia</label><input type="text" id="slot-materia"></div>
+        <div class="form-group"><label for="slot-profesor">Profesor</label><input type="text" id="slot-profesor"></div>
+        <div class="form-group"><label for="slot-aula">Aula</label><input type="text" id="slot-aula" placeholder="Ej: 5"></div>
+        <div class="modal-actions">
+          <button id="save-slot-btn" class="btn success">Guardar</button>
+          <button id="delete-slot-btn" class="btn danger">Borrar</button>
+        </div>
+      </div>
+    </div>
+    <!--Configurar Horario-->
+    <div id="time-slots-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button class="close-btn">&times;</button>
+        <h2>Configurar Bloques Horarios</h2>
+        <div class="turno-config">
+          <h3>Turno Mañana</h3>
+          <div id="time-slots-list-manana"></div>
+          <button class="btn add-time-slot-btn" data-turno="manana">➕ Agregar Horario Mañana</button>
+        </div>
+        <hr>
+        <div class="turno-config">
+          <h3>Turno Tarde</h3>
+          <div id="time-slots-list-tarde"></div>
+          <button class="btn add-time-slot-btn" data-turno="tarde">➕ Agregar Horario Tarde</button>
+        </div>
+        <div class="modal-actions"><button id="save-time-slots-btn" class="btn success">Guardar y Cerrar</button></div>
+      </div>
+    </div>
+        
+    <!-- MODAL UNIFICADO PARA ALERTAS Y CONFIRMACIONES -->
+    <div id="alert-modal" class="modal-overlay hidden">
+        <div class="modal-content small">
+            <button class="close-btn">&times;</button>
+            <h2 id="alert-title">Aviso</h2>
+            <p id="alert-message">Este es un mensaje.</p>
+            <div class="modal-actions">
+                <button id="alert-confirm-btn" class="btn danger hidden">Confirmar</button>
+                <button id="alert-cancel-btn" class="btn secondary hidden">Cancelar</button>
+                <button id="alert-ok-btn" class="btn primary">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script_directivo.js"></script>
+</body>
+</html>
+

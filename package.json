@@ -1,0 +1,18 @@
+{
+  "name": "educasync-app",
+  "version": "1.0.0",
+  "description": "Sistema Administrativo Estudiantil",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "Melani Lechman",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.0.0"
+  },
+  "dependencies": {
+    "nodemailer": "^7.0.9"
+  }
+}

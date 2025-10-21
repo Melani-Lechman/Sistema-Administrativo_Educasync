@@ -1,0 +1,85 @@
+[
+  {
+    "day": 11,
+    "month": 11,
+    "year": 2025,
+    "events": [
+      {
+        "title": "Tesis",
+        "timeFrom": "16:00",
+        "location": "Instituto",
+        "courses": [
+          {
+            "id": "c3",
+            "year": "3°",
+            "modality": "TIPP",
+            "students": 30,
+            "text": "3°",
+            "color": "#85C1E9"
+          },
+          {
+            "id": "c4",
+            "year": "3°",
+            "modality": "MMO",
+            "students": 28,
+            "text": "3°",
+            "color": "#E59866"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "day": 18,
+    "month": 10,
+    "year": 2025,
+    "events": [
+      {
+        "title": "meli",
+        "timeFrom": "10:10",
+        "location": "apm",
+        "courses": [
+          {
+            "id": "c7",
+            "year": "5°",
+            "modality": "TIPP",
+            "students": 28,
+            "text": "5°",
+            "color": "#2874A6"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "day": 22,
+    "month": 10,
+    "year": 2025,
+    "events": [
+      {
+        "title": "prueba",
+        "timeFrom": "15:28",
+        "location": "casa",
+        "courses": [
+          {
+            "id": "c1",
+            "year": "1°",
+            "modality": "Inicial",
+            "students": 50,
+            "text": "1°",
+            "color": "#CCD1D1"
+          },
+          {
+            "id": "c3",
+            "year": "3°",
+            "modality": "TIPP",
+            "students": 30,
+            "text": "3°",
+            "color": "#85C1E9"
+          }
+        ],
+        "notified": true
+      }
+    ]
+  }
+]

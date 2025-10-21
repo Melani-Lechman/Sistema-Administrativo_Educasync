@@ -1,0 +1,36 @@
+Cómo Ejecutar la Aplicación con Electron
+Sigue estos pasos para configurar y ejecutar tu sistema como una aplicación de escritorio.
+
+Prerrequisitos
+Necesitas tener Node.js instalado en tu computadora. Esto también instalará npm (Node Package Manager), que es necesario para manejar las dependencias del proyecto.
+
+Pasos
+Crear la Carpeta del Proyecto:
+
+Crea una nueva carpeta en tu computadora para el proyecto. Por ejemplo, llámala educasync-desktop.
+
+Copiar los Archivos:
+
+Coloca los cuatro archivos que te proporcioné (package.json, main.js, preload.js, y index.html) dentro de la carpeta educasync-desktop.
+
+Abrir la Terminal:
+
+Abre una terminal o línea de comandos.
+
+Navega hasta la carpeta que acabas de crear. Por ejemplo:
+
+cd ruta/a/tu/proyecto/educasync-desktop
+
+Instalar Dependencias:
+
+Una vez dentro de la carpeta del proyecto en tu terminal, ejecuta el siguiente comando. Esto leerá el archivo package.json y descargará Electron.
+
+npm install
+
+Iniciar la Aplicación:
+
+Después de que la instalación se complete, ejecuta este comando para iniciar tu aplicación:
+
+npm start
+
+¡Y eso es todo! Se abrirá una ventana de escritorio con tu aplicación funcionando.
