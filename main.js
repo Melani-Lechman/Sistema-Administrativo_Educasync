@@ -17,7 +17,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile('login.html');
+  mainWindow.loadFile('index.html');
 }
 
 
@@ -55,7 +55,7 @@ ipcMain.handle('login-user', async (event, credentials) => {
 
 ipcMain.on('navigate-to-login', () => {
     if (mainWindow) {
-        mainWindow.loadFile(path.join(__dirname, 'login.html'));
+        mainWindow.loadFile(path.join(__dirname, 'index.html'));
     }
 });
 
@@ -180,10 +180,6 @@ async function checkEventsAndSendEmails() {
     }
 }
 function startEventChecker() {
-    console.log("Modo de prueba de correos activado. Verificando cada 10 segundos.");
-    // ✅ CAMBIO PARA PRUEBA: Se ejecuta cada 10 segundos!!! esto debe cambiarse a cada hora en producción que es lo que está comentado abajo.
-    setInterval(checkEventsAndSendEmails, 10000); 
-
-    // ⚠️ La línea original para producción es:
-    // setInterval(checkEventsAndSendEmails, 1000 * 60 * 60); // Cada hora
+    console.log("Modo de prueba de correos activado. Verificando cada 1 hora.");
+    setInterval(checkEventsAndSendEmails, 1000 * 60 * 60); // Cada hora
 }
