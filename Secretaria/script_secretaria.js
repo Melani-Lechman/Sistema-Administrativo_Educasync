@@ -314,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         window.electronAPI.openLink('https://htmlcolorcodes.com/es/tabla-de-colores/');
     });
+
     // --- NAVEGACIÓN POR FECHA ---
     gotoBtn.addEventListener("click", gotoDate);
     dateInput.addEventListener("keypress", (e) => { if (e.key === "Enter") gotoDate(); });
@@ -339,6 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 initCalendar();
                 getActiveDay(activeDay);
                 updateEvents(activeDay);
+                dateInput.value = "";
                 return;
             }
         }

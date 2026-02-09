@@ -14,22 +14,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- CARGA Y GUARDADO DE DATOS ---
     async function loadData() {
-        allEvents = await window.electronAPI.readData('events.json') || [];
-        allCourses = await window.electronAPI.readData('courses.json') || [];
-        schoolData = await window.electronAPI.readData('schedules.json');
-        
-        if (!schoolData || !schoolData.timeSlots) {
-            schoolData = {
-              "timeSlots": { "manana": ["07:45 - 08:25"], "tarde": ["13:30 - 14:10"] },
-              "1": { "name": "Primer Año", "divisions": {} }, "2": { "name": "Segundo Año", "divisions": {} },
-              "3": { "name": "Tercer Año", "divisions": {} }, "4": { "name": "Cuarto Año", "divisions": {} },
-              "5": { "name": "Quinto Año", "divisions": {} }, "6": { "name": "Sexto Año", "divisions": {} }
-            };
-            await saveData('schedules.json', schoolData);
-        }
-        
-        switchView('inicio');
+
+    // --- Cargar EVENTS ---
+    allEvents = await window.electronAPI.readData('events.json') || [];
+
+    // --- Cargar COURSES con conversión a número SIEMPRE ---
+    allCourses = (await window.electronAPI.readData('courses.json') || []).map(course => ({
+        ...course,
+        students: course.students !== undefined ? Number(course.students) : 0
+    }));
+
+    // --- Cargar SCHEDULES ---
+    schoolData = await window.electronAPI.readData('schedules.json');
+
+    // Corrección si schedules.json está vacío o corrupto
+    if (!schoolData || !schoolData.timeSlots) {
+        schoolData = {
+            "timeSlots": { "mañana": ["07:45 - 08:25"], "tarde": ["13:30 - 14:10"] },
+            "1": { "name": "Primer Año", "divisions": {} },
+            "2": { "name": "Segundo Año", "divisions": {} },
+            "3": { "name": "Tercer Año", "divisions": {} },
+            "4": { "name": "Cuarto Año", "divisions": {} },
+            "5": { "name": "Quinto Año", "divisions": {} },
+            "6": { "name": "Sexto Año", "divisions": {} }
+        };
+        await saveData('schedules.json', schoolData);
     }
+
+    // Cargar vista inicial
+    switchView('inicio');
+}
+
 
     async function saveData(fileName, data) {
         const result = await window.electronAPI.writeData(fileName, data);
@@ -185,54 +200,124 @@ function renderEventosView() {
     }
     
    // --- Gestión de Eventos (con validación) ---
-    async function saveEvent(e) {
-        e.preventDefault();
-        const form = e.target;
-        const dateValue = form.querySelector('#event-date').value;
-        const timeValue = form.querySelector('#event-time').value;
+async function saveEvent(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const eventId = form.querySelector('#event-id-input').value.trim(); 
+    
+    const dateValue = form.querySelector('#event-date').value;
+    const timeValue = form.querySelector('#event-time').value;
 
-        // Validación de fecha y hora
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateValue) || !/^\d{2}:\d{2}$/.test(timeValue)) {
-            return showAlert("Formato Inválido", "Por favor, use el formato dd/mm/aaaa para la fecha y HH:MM para la hora.");
-        }
-        const [day, month, year] = dateValue.split('/');
-        const dateObj = new Date(year, month - 1, day);
-        if (dateObj.getFullYear() != year || dateObj.getMonth() != month - 1 || dateObj.getDate() != day) {
-            return showAlert("Fecha Inválida", "La fecha ingresada no es válida.");
-        }
-        const eventData = {
-            title: form.querySelector('#event-title').value,
-            timeFrom: form.querySelector('#event-time').value,
-            location: form.querySelector('#event-location').value,
-            courses: [] 
-        };
+    // Validación de formatos
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateValue) || !/^\d{2}:\d{2}$/.test(timeValue)) {
+        return showAlert("Formato Inválido", "Por favor, use dd/mm/aaaa para la fecha y HH:MM para la hora.");
+    }
 
-        if (eventId) { // Editar
-            const [dayIndex, eventIndex] = eventId.split('-');
-            const originalDayEntry = allEvents[dayIndex];
-            const originalEvent = originalDayEntry.events[eventIndex];
+    const [day, month, year] = dateValue.split('/');
+    const dateObj = new Date(year, month - 1, day);
+
+    // Validación de existencia de fecha real
+    if (
+        dateObj.getFullYear() != year ||
+        dateObj.getMonth() != month - 1 ||
+        dateObj.getDate() != day
+    ) {
+        return showAlert("Fecha Inválida", "La fecha ingresada no es válida.");
+    }
+
+    // Datos del evento
+    const eventData = {
+        title: form.querySelector('#event-title').value,
+        timeFrom: form.querySelector('#event-time').value,
+        location: form.querySelector('#event-location').value,
+        courses: []
+    };
+
+    // ----------------------------------------------------
+    // ---------   EDITAR EVENTO EXISTENTE   --------------
+    // ----------------------------------------------------
+    if (eventId) {
+          const eventData = {
+                title: form.querySelector('#event-title').value,
+                timeFrom: timeValue,
+                location: form.querySelector('#event-location').value
+            };
+
+        const [dayIndex, eventIndex] = eventId.split('-');
+        const originalDayEntry = allEvents[dayIndex];
+        const originalEvent = originalDayEntry.events[eventIndex];
+
+        const isSameDate =
+            originalDayEntry.day == day &&
+            originalDayEntry.month == month &&
+            originalDayEntry.year == year;
             
-            if(originalDayEntry.day == day && originalDayEntry.month == month && originalDayEntry.year == year) {
-                originalDayEntry.events[eventIndex] = { ...originalEvent, ...eventData };
-            } else {
-                originalDayEntry.events.splice(eventIndex, 1);
-                if (originalDayEntry.events.length === 0) allEvents.splice(dayIndex, 1);
-                let dayEntry = allEvents.find(d => d.day == day && d.month == month && d.year == year);
-                if (dayEntry) dayEntry.events.push({ ...originalEvent, ...eventData });
-                else allEvents.push({ day: parseInt(day), month: parseInt(month), year: parseInt(year), events: [{ ...originalEvent, ...eventData }] });
+        if (isSameDate) {
+            // Misma fecha → actualizar datos solamente
+            originalDayEntry.events[eventIndex] = { ...originalEvent, ...eventData };
+        } else {
+            // Fecha cambiada → mover evento
+            originalDayEntry.events.splice(eventIndex, 1);
+
+            if (originalDayEntry.events.length === 0) {
+                allEvents.splice(dayIndex, 1);
             }
-        } else { // Crear
-            let dayEntry = allEvents.find(d => d.day == day && d.month == month && d.year == year);
-            if (dayEntry) dayEntry.events.push(eventData);
-            else allEvents.push({ day: parseInt(day), month: parseInt(month), year: parseInt(year), events: [eventData] });
+
+            let newDayEntry = allEvents.find(
+                d => d.day == day && d.month == month && d.year == year
+            );
+
+            const newEvent = { ...originalEvent, ...eventData };
+
+            if (newDayEntry) {
+                newDayEntry.events.push(newEvent);
+            } else {
+                allEvents.push({
+                    day: parseInt(day),
+                    month: parseInt(month),
+                    year: parseInt(year),
+                    events: [newEvent]
+                });
+            }
         }
-        
-        if ((await saveData('events.json', allEvents)).success) {
-            document.getElementById('event-modal').classList.add('hidden');
-            switchView('eventos');
+
+    } else {
+        // ----------------------------------------------------
+        // ---------    CREAR NUEVO EVENTO        ------------
+        // ----------------------------------------------------
+        const eventData = {
+                title: form.querySelector('#event-title').value,
+                timeFrom: timeValue,
+                location: form.querySelector('#event-location').value,
+                courses: []
+            }
+        let dayEntry = allEvents.find(
+            d => d.day == day && d.month == month && d.year == year
+            
+        );
+
+        if (dayEntry) {
+            dayEntry.events.push(eventData);
+        } else {
+            allEvents.push({
+                day: parseInt(day),
+                month: parseInt(month),
+                year: parseInt(year),
+                events: [eventData]
+            });
         }
     }
-    
+
+    // ----------------------------------------------------
+    // ---------   GUARDADO FINAL Y REFRESCO   ------------
+    // ----------------------------------------------------
+    if ((await saveData('events.json', allEvents)).success) {
+        document.getElementById('event-modal').classList.add('hidden');
+        await refreshIfInEventosView(); // Recarga auto si estás en Eventos
+    }
+}
+
  
     async function deleteEvent(eventId) {
         const confirmed = await showConfirm("Confirmar Eliminación", "¿Estás seguro de que quieres eliminar este evento?");
@@ -243,23 +328,27 @@ function renderEventosView() {
                 allEvents.splice(dayIndex, 1);
             }
             if ((await saveData('events.json', allEvents)).success) {
-                switchView('eventos');
-            }
+                 document.getElementById('event-modal').classList.add('hidden');
+                    await refreshIfInEventosView(); // <-- refresca automáticamente
+}
         }
     }
     
     
     function openCourseModal(courseId) {
-        const modal = document.getElementById('course-modal');
-        const course = allCourses.find(c => c.id === courseId);
-        if (!course) return;
-        modal.querySelector('#course-id-input').value = course.id;
-        modal.querySelector('#course-text').value = course.text;
-        modal.querySelector('#course-modality').value = course.modality;
-        modal.querySelector('#course-color').value = course.color;
-        modal.querySelector('#course-students').value = course.students || 0;
-        modal.classList.remove('hidden');
-    }
+    const modal = document.getElementById('course-modal');
+    const course = allCourses.find(c => c.id === courseId);
+    if (!course) return;
+    modal.querySelector('#course-id-input').value = course.id;
+    modal.querySelector('#course-text').value = course.text;
+    modal.querySelector('#course-modality').value = course.modality;
+    modal.querySelector('#course-color').value = course.color;
+
+    modal.querySelector('#course-students').value = course.students ?? 0;
+
+    modal.classList.remove('hidden');
+}
+
 
     async function saveCourse(e) {
         e.preventDefault();
@@ -284,7 +373,7 @@ function renderEventosView() {
         modal.querySelector('#schedule-title').textContent = `Horario: ${schoolData[yearId].name} - ${divisionName}`;
         const tabsContainer = modal.querySelector('#schedule-tabs');
         tabsContainer.innerHTML = '';
-        ['manana', 'tarde'].forEach(turno => {
+        ['mañana', 'tarde'].forEach(turno => {
             const tabBtn = document.createElement('button');
             tabBtn.className = 'tab-btn';
             tabBtn.textContent = `Turno ${turno.charAt(0).toUpperCase() + turno.slice(1)}`;
@@ -386,7 +475,7 @@ function renderEventosView() {
         addBtn.onclick = async () => {
             const newName = input.value.trim().toUpperCase();
             if (newName && !schoolData[yearId].divisions[newName]) {
-                schoolData[yearId].divisions[newName] = { manana: [], tarde: [] };
+                schoolData[yearId].divisions[newName] = { mañana: [], tarde: [] };
                 await saveData('schedules.json', schoolData);
                 input.value = '';
                 renderList();
@@ -402,7 +491,7 @@ function renderEventosView() {
         const modal = document.getElementById('time-slots-modal');
         const saveBtn = modal.querySelector('#save-time-slots-btn');
 
-        ['manana', 'tarde'].forEach(turno => {
+        ['mañana', 'tarde'].forEach(turno => {
             const listContainer = modal.querySelector(`#time-slots-list-${turno}`);
             const addBtn = modal.querySelector(`.add-time-slot-btn[data-turno="${turno}"]`);
             
@@ -421,7 +510,7 @@ function renderEventosView() {
         });
 
         saveBtn.onclick = async () => {
-            ['manana', 'tarde'].forEach(turno => {
+            ['mañana', 'tarde'].forEach(turno => {
                 const inputs = modal.querySelectorAll(`#time-slots-list-${turno} input`);
                 schoolData.timeSlots[turno] = Array.from(inputs).map(input => input.value.trim()).filter(Boolean);
             });
@@ -435,39 +524,89 @@ function renderEventosView() {
     // --- FUNCIÓN PRINCIPAL Y EVENT LISTENERS ---
     // =============================================================
     
-    async function switchView(viewName) {
-        let content = '', title = '';
-        configSchedulesBtn.classList.add('hidden');
+  async function switchView(viewName) {
+    let content = '', title = '';
+    configSchedulesBtn.classList.add('hidden');
 
-        // Recargar los datos cada vez que se cambia de vista para asegurar consistencia
-        allEvents = await window.electronAPI.readData('events.json') || [];
-        allCourses = await window.electronAPI.readData('courses.json') || [];
+    // Recargar datos siempre que cambiamos de vista
+    allEvents = await window.electronAPI.readData('events.json') || [];
 
-        switch (viewName) {
-            case 'inicio': title = 'Panel de Inicio'; content = renderInicioView(); break;
-            case 'eventos': title = 'Gestión de Eventos'; content = renderEventosView(); break;
-            case 'cursos': title = 'Gestión de Cursos'; content = renderCursosView(); break;
-            case 'info-curso':
-                title = 'Información por Curso';
-                content = renderInfoCursoView();
-                configSchedulesBtn.classList.remove('hidden');
-                break;
-            default: title = 'Panel de Inicio'; content = renderInicioView();
-        }
-        viewTitle.textContent = title;
-        contentArea.innerHTML = content;
-        
-        setupEventListenersForView(viewName);
+    // --- AQUÍ: conversión garantizada SIEMPRE ---
+    allCourses = ((await window.electronAPI.readData('courses.json')) || []).map(course => ({
+        ...course,
+        students: course.students !== undefined ? Number(course.students) : 0
+    }));
 
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.dataset.view === viewName) {
-                link.classList.add('active');
-            }
-        });
+    switch (viewName) {
+        case 'inicio':
+            title = 'Panel de Inicio';
+            content = renderInicioView();
+            break;
+
+        case 'eventos':
+            title = 'Gestión de Eventos';
+            content = renderEventosView();
+            break;
+
+        case 'cursos':
+            title = 'Gestión de Cursos';
+            content = renderCursosView();
+            break;
+
+        case 'info-curso':
+            title = 'Información por Curso';
+            content = renderInfoCursoView();
+            configSchedulesBtn.classList.remove('hidden');
+            break;
+
+        default:
+            title = 'Panel de Inicio';
+            content = renderInicioView();
     }
 
+    viewTitle.textContent = title;
+    contentArea.innerHTML = content;
+
+    setupEventListenersForView(viewName);
+
+    // Marcar la pestaña activa
+    // --- RESET REAL DE TODAS LAS NAVS ---
+navLinks.forEach(link => link.classList.remove('active'));
+
+// --- ACTIVAR SOLO LA CORRECTA ---
+const navToActivate = document.querySelector(`.nav-link[data-view="${viewName}"]`);
+if (navToActivate) navToActivate.classList.add('active');
+
+
+}
+
+
     function setupEventListenersForView(viewName) {
+         if (viewName === 'eventos') {
+            document.getElementById('create-event-btn')?.addEventListener('click', () => openEventModal());
+            document.querySelectorAll('.event-edit-btn').forEach(b => b.addEventListener('click', e => openEventModal(e.currentTarget.dataset.eventId)));
+            document.querySelectorAll('.event-delete-btn').forEach(b => b.addEventListener('click', e => deleteEvent(e.currentTarget.dataset.eventId)));
+            
+            // Formato automático para el modal de eventos
+            const eventDateInput = document.getElementById('event-date');
+            const eventTimeInput = document.getElementById('event-time');
+            if(eventDateInput) {
+                eventDateInput.addEventListener("input", (e) => {
+                    let value = e.target.value.replace(/\D/g, "");
+                    if (value.length > 2 && value.length <= 4) { value = value.slice(0, 2) + "/" + value.slice(2); } 
+                    else if (value.length > 4) { value = value.slice(0, 2) + "/" + value.slice(2, 4) + "/" + value.slice(4, 8); }
+                    e.target.value = value;
+                });
+            }
+            if(eventTimeInput) {
+                eventTimeInput.addEventListener("input", (e) => {
+                    let value = e.target.value.replace(/\D/g, "");
+                    if (value.length > 2 && value.length <= 4) { value = value.slice(0, 2) + ":" + value.slice(2); }
+                    else if (value.length > 4) { value = value.slice(0, 2) + ":" + value.slice(2, 4); }
+                    e.target.value = value;
+                });
+            }
+        }
         if (viewName === 'eventos') {
             document.getElementById('create-event-btn')?.addEventListener('click', () => openEventModal());
             document.querySelectorAll('.event-edit-btn').forEach(b => b.addEventListener('click', e => openEventModal(e.currentTarget.dataset.eventId)));
@@ -505,6 +644,13 @@ function renderEventosView() {
         }
     });
     
+async function refreshIfInEventosView() {
+    const currentView = document.querySelector('.nav-link.active')?.dataset.view;
+    
+    if (currentView === 'eventos') {
+        await switchView('eventos'); // recarga lista con datos nuevos
+    }
+}
 
 
  //  Listener para el botón OK del modal de alerta
@@ -512,10 +658,53 @@ function renderEventosView() {
         document.getElementById('alert-modal').classList.add('hidden');
     });
 
-    document.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', () => btn.closest('.modal-overlay').classList.add('hidden')));
+    document.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', (e) => e.currentTarget.closest('.modal-overlay').classList.add('hidden')));
     document.getElementById('event-form')?.addEventListener('submit', saveEvent);
     document.getElementById('course-form')?.addEventListener('submit', saveCourse);
 
     loadData();
 });
 
+ // LÓGICA DE DESCARGA DE HORARIO COMO IMAGEN
+       document.addEventListener('DOMContentLoaded', () => {
+        const downloadBtn = document.querySelector('.btn-download'); // Usamos la clase del botón
+        
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', () => {
+                // CORRECCIÓN: Usar el ID real del contenedor en el HTML
+                const areaCaptura = document.getElementById('horario-captura');
+                
+                // CORRECCIÓN: Validar si existe el título o poner uno por defecto
+                const tituloElem = document.querySelector('.header-horario h2');
+                const titulo = tituloElem ? tituloElem.innerText : 'horario';
+
+                // Feedback visual
+                const originalContent = downloadBtn.innerHTML;
+                downloadBtn.disabled = true;
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+
+                // Ejecutar captura
+                html2canvas(areaCaptura, {
+                    scale: 2,
+                    useCORS: true, // Importante si hay imágenes o fuentes externas
+                    backgroundColor: "#ffffff",
+                    logging: false // Cambiar a true si necesitas ver el error en consola
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `${titulo.replace(/\s+/g, '_')}.png`;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+
+                    // Restaurar botón
+                    downloadBtn.disabled = false;
+                    downloadBtn.innerHTML = originalContent;
+                }).catch(err => {
+                    console.error("Error capturando horario:", err);
+                    alert("Error al generar la imagen. Revisa la consola.");
+                    downloadBtn.disabled = false;
+                    downloadBtn.innerHTML = originalContent;
+                });
+            });
+        }
+    });
+    

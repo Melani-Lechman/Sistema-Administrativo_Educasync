@@ -3,19 +3,153 @@
     "name": "Primer Año",
     "divisions": {
       "A": {
-        "manana": [
+        "mañana": [
           {
             "hora": "07:45 - 08:25",
             "dia": "LUNES",
             "materia": "Lengua",
             "profesor": "Mariana Lorenza",
             "aula": "6"
+          },
+          {
+            "hora": "8:50 a 10:10",
+            "dia": "VIERNES",
+            "materia": "Educación Física",
+            "profesor": "Santiago B.",
+            "aula": "Playón"
+          },
+          {
+            "hora": "10:30 a 11:50",
+            "dia": "VIERNES",
+            "materia": "Educación Física",
+            "profesor": "Santiago B.",
+            "aula": "Playón"
           }
         ],
-        "tarde": []
+        "tarde": [
+          {
+            "hora": "13:30 a 14:50",
+            "dia": "MARTES",
+            "materia": "Dibujo Técnico",
+            "profesor": "Melina I.",
+            "aula": "7"
+          },
+          {
+            "hora": "14:50 a 16:10",
+            "dia": "MARTES",
+            "materia": "Dibujo Técnico ",
+            "profesor": "Melina I.",
+            "aula": "7"
+          },
+          {
+            "hora": "13:30 a 14:50",
+            "dia": "VIERNES",
+            "materia": "Taller",
+            "profesor": "Mateo T.",
+            "aula": "7"
+          },
+          {
+            "hora": "14:50 a 16:10",
+            "dia": "VIERNES",
+            "materia": "Taller",
+            "profesor": "Mateo T.",
+            "aula": "7"
+          },
+          {
+            "hora": "13:30 a 14:50",
+            "dia": "LUNES",
+            "materia": "Matemática",
+            "profesor": "Estefania P.",
+            "aula": "3"
+          },
+          {
+            "hora": "14:50 a 16:10",
+            "dia": "LUNES",
+            "materia": "Matemática",
+            "profesor": "Estefania P.",
+            "aula": "3"
+          },
+          {
+            "hora": "16:30 a 17:50",
+            "dia": "LUNES",
+            "materia": "Literatura",
+            "profesor": "Luciana T.",
+            "aula": "3"
+          },
+          {
+            "hora": "17:50 a 18:30",
+            "dia": "LUNES",
+            "materia": "Historia",
+            "profesor": "Manuel P.",
+            "aula": "3"
+          },
+          {
+            "hora": "13:30 a 14:50",
+            "dia": "MIÉRCOLES",
+            "materia": "Biología",
+            "profesor": "Micaela N.",
+            "aula": "3"
+          },
+          {
+            "hora": "14:50 a 16:10",
+            "dia": "MIÉRCOLES",
+            "materia": "Biología",
+            "profesor": "Micaela N.",
+            "aula": "3"
+          },
+          {
+            "hora": "13:30 a 14:50",
+            "dia": "JUEVES",
+            "materia": "Geografía",
+            "profesor": "Gonzalo G.",
+            "aula": "3"
+          },
+          {
+            "hora": "14:50 a 16:10",
+            "dia": "JUEVES",
+            "materia": "Geografía",
+            "profesor": "Gonzalo G.",
+            "aula": "3"
+          },
+          {
+            "hora": "16:30 a 17:50",
+            "dia": "MARTES",
+            "materia": "Inglés",
+            "profesor": "Yuliana J.",
+            "aula": "3"
+          },
+          {
+            "hora": "17:50 a 18:30",
+            "dia": "MARTES",
+            "materia": "Inglés",
+            "profesor": "Yuliana J.",
+            "aula": "3"
+          },
+          {
+            "hora": "16:30 a 17:50",
+            "dia": "JUEVES",
+            "materia": "Formación Ética y Ciudadana",
+            "profesor": "Paola H.",
+            "aula": "3"
+          },
+          {
+            "hora": "16:30 a 17:50",
+            "dia": "MIÉRCOLES",
+            "materia": "Literatura",
+            "profesor": "Luciana T.",
+            "aula": "3"
+          },
+          {
+            "hora": "17:50 a 18:30",
+            "dia": "JUEVES",
+            "materia": "Formación Ética y Ciudadana",
+            "profesor": "Paola H.",
+            "aula": "3"
+          }
+        ]
       },
       "B": {
-        "manana": [],
+        "mañana": [],
         "tarde": [
           {
             "hora": "13:30 - 14:10",
@@ -27,15 +161,7 @@
         ]
       },
       "C": {
-        "manana": [
-          {
-            "hora": "07:45 - 08:25",
-            "dia": "LUNES",
-            "materia": "lengua",
-            "profesor": "Mariana",
-            "aula": "5"
-          }
-        ],
+        "mañana": [],
         "tarde": []
       }
     }
@@ -44,11 +170,11 @@
     "name": "Segundo Año",
     "divisions": {
       "A": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       },
       "B": {
-        "manana": [
+        "mañana": [
           {
             "hora": "07:45 - 08:25",
             "dia": "LUNES",
@@ -60,7 +186,7 @@
         "tarde": []
       },
       "C": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       }
     }
@@ -69,11 +195,11 @@
     "name": "Tercer Año",
     "divisions": {
       "A-TIPP": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       },
       "B-MMO": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       }
     }
@@ -82,11 +208,11 @@
     "name": "Cuarto Año",
     "divisions": {
       "A-TIPP": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       },
       "B-MMO": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       }
     }
@@ -95,11 +221,11 @@
     "name": "Quinto Año",
     "divisions": {
       "A-TIPP": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       },
       "B-MMO": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       }
     }
@@ -108,22 +234,27 @@
     "name": "Sexto Año",
     "divisions": {
       "A-TIPP": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       },
       "B-MMO": {
-        "manana": [],
+        "mañana": [],
         "tarde": []
       }
     }
   },
   "timeSlots": {
-    "manana": [
-      "07:45 - 08:25",
-      "10:00 - 13:00"
+    "mañana": [
+      "7:30 a 8:50",
+      "8:50 a 10:10",
+      "10:30 a 11:50",
+      "11:50 a 12:30"
     ],
     "tarde": [
-      "13:30 - 14:10"
+      "13:30 a 14:50",
+      "14:50 a 16:10",
+      "16:30 a 17:50",
+      "17:50 a 18:30"
     ]
   }
 }
